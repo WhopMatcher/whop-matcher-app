@@ -1,0 +1,71 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id          String   @id @default(cuid())
+  whopUserId  String   @unique
+  username    String
+  communityId String
+  goals       String[]
+  skills      String[]
+  location    String?
+  experience  Int?
+  bio         String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  matchesAsUser1 Match[] @relation("UserMatches1")
+  matchesAsUser2 Match[] @relation("UserMatches2")
+  preferences MatchingPreferences?
+}
+
+model Match {
+  id            String   @id @default(cuid())
+  user1Id       String
+  user2Id       String
+  compatibility Int
+  status        String   // pending, accepted, rejected
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  connection    Connection?
+  user1         User     @relation("UserMatches1", fields: [user1Id], references: [id])
+  user2         User     @relation("UserMatches2", fields: [user2Id], references: [id])
+}
+
+model MatchingPreferences {
+  id              String   @id @default(cuid())
+  userId          String   @unique
+  interests       String[]
+  experienceRange String?
+  locationRadius  Int?
+  ageRange        String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Connection {
+  id                 String   @id @default(cuid())
+  matchId            String   @unique
+  connectionDate     DateTime @default(now())
+  interactionLevel   String
+  collaborationStatus String
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  match              Match    @relation(fields: [matchId], references: [id], onDelete: Cascade)
+}
+
+model CommunitySettings {
+  id              String   @id @default(cuid())
+  communityId     String   @unique
+  matchingEnabled Boolean  @default(true)
+  customFields    Json?
+  filters         Json?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+} 

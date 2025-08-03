@@ -14,9 +14,45 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Whop App",
-	description: "My Whop App",
+	metadataBase: new URL("https://matcher.whop.com"),
+	title: "Matcher - AI-Powered Community Networking | Whop",
+	description: "Connect with like-minded community members through intelligent matching. Find business partners, mentors, and collaborators in your Whop community.",
+	keywords: "community networking, AI matching, business partners, mentors, collaborators, Whop app",
+	authors: [{ name: "Matcher Team" }],
+	creator: "Matcher",
+	publisher: "Matcher",
+	robots: "index, follow",
+	openGraph: {
+		title: "Matcher - AI-Powered Community Networking",
+		description: "Connect with like-minded community members through intelligent matching. Find business partners, mentors, and collaborators.",
+		url: "https://matcher.whop.com",
+		siteName: "Matcher",
+		images: [
+			{
+				url: "/og-image.png",
+				width: 1200,
+				height: 630,
+				alt: "Matcher - AI-Powered Community Networking",
+			},
+		],
+		locale: "en_US",
+		type: "website",
+	},
+	twitter: {
+		card: "summary_large_image",
+		title: "Matcher - AI-Powered Community Networking",
+		description: "Connect with like-minded community members through intelligent matching.",
+		images: ["/og-image.png"],
+	},
 };
+
+export const viewport = {
+	width: "device-width",
+	initialScale: 1,
+	maximumScale: 1,
+};
+
+export const themeColor = "#667eea";
 
 export default function RootLayout({
 	children,
